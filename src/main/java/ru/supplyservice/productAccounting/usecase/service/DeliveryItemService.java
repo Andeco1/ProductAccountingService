@@ -1,5 +1,6 @@
 package ru.supplyservice.productAccounting.usecase.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.supplyservice.productAccounting.core.dao.DeliveryItemRepository;
@@ -19,6 +20,15 @@ public class DeliveryItemService {
     ProductService productService;
     DTOMapper mapper;
     DeliveryItemRepository deliveryItemRepository;
+
+    @Autowired
+    public DeliveryItemService(ProductPricePeriodService productPricePeriodService, ProductService productService, DTOMapper mapper, DeliveryItemRepository deliveryItemRepository) {
+        this.productPricePeriodService = productPricePeriodService;
+        this.productService = productService;
+        this.mapper = mapper;
+        this.deliveryItemRepository = deliveryItemRepository;
+    }
+
     @Transactional
     public DeliveryItem saveDeliveryItem(DeliveryRecord deliveryRecord, String productName, BigDecimal quantity, Boolean acceptance){
         Supplier supplier = deliveryRecord.getSupplier();

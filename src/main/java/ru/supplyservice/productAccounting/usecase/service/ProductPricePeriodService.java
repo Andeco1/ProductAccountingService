@@ -1,5 +1,6 @@
 package ru.supplyservice.productAccounting.usecase.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.supplyservice.productAccounting.core.dao.ProductPricePeriodRepository;
@@ -17,6 +18,11 @@ import java.util.Optional;
 public class ProductPricePeriodService {
     DTOMapper mapper;
     ProductPricePeriodRepository productPricePeriodRepository;
+    @Autowired
+    public ProductPricePeriodService(DTOMapper mapper, ProductPricePeriodRepository productPricePeriodRepository) {
+        this.mapper = mapper;
+        this.productPricePeriodRepository = productPricePeriodRepository;
+    }
 
     @Transactional(readOnly = true)
     public ProductPricePeriodDTO getActivePricePeriod(Product product, Supplier supplier, Instant date){

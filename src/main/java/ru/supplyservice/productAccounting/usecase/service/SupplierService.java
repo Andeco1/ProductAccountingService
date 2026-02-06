@@ -12,10 +12,14 @@ import java.util.Optional;
 
 @Service
 public class SupplierService {
-    @Autowired
     SupplierRepository supplierRepository;
-    @Autowired
     DTOMapper mapper;
+
+    @Autowired
+    public SupplierService(SupplierRepository supplierRepository, DTOMapper mapper) {
+        this.supplierRepository = supplierRepository;
+        this.mapper = mapper;
+    }
 
     public SupplierDTO getSupplierByName(String name){
         Optional<Supplier> supplier = supplierRepository.findByName(name);

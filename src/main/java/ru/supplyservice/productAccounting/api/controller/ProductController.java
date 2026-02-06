@@ -12,11 +12,16 @@ import ru.supplyservice.productAccounting.usecase.service.ProductService;
 @RestController
 @RequestMapping("/api")
 public class ProductController {
-    @Autowired
     ProductService productService;
+
+    @Autowired
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @GetMapping("/product/{name}")
     public ResponseEntity<ProductDTO> getProductByName(@PathVariable String name){
         return ResponseEntity.ok(productService.getProductByName(name));
     }
+
 }
