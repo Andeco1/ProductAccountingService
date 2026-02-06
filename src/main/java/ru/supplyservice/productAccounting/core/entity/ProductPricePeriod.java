@@ -30,4 +30,12 @@ public class ProductPricePeriod {
     Instant endDate;
     @Column(nullable = false)
     BigDecimal pricePerMeasurementUnit;
+
+    public ProductPricePeriod(Supplier supplier, Product product, Instant startDate, Instant endDate, BigDecimal pricePerMeasurementUnit) {
+        this.supplier = supplier;
+        this.product = product;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.pricePerMeasurementUnit = pricePerMeasurementUnit;
+    }
 }
