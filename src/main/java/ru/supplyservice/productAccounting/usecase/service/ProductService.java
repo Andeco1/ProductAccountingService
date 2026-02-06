@@ -28,4 +28,10 @@ public class ProductService {
         Optional<Product> product = productRepository.findByName(name);
         return mapper.productToProductDTO(product.orElseThrow(() -> new FruitAccountingException(name + " не найден")));
     }
+
+    @Transactional
+    public ProductDTO saveProduct(ProductDTO productDTO){
+        Product product = productRepository.save(mapper.productDTOToProduct(productDTO));
+        return mapper.productToProductDTO(product);
+    }
 }
