@@ -10,12 +10,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
-    @Column(nullable = false, unique = true)
-    String name;
-    String info;
-    @Column(nullable = false)
-    String measurementUnit;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  Long id;
+
+  @Column(nullable = false, unique = true)
+  String name;
+
+  String info;
+
+  @Column(nullable = false)
+  String measurementUnit;
 }

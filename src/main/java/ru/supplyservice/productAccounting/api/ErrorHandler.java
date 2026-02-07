@@ -8,8 +8,8 @@ import ru.supplyservice.productAccounting.exception.ProductAccountingException;
 
 @RestControllerAdvice
 public class ErrorHandler {
-    @ExceptionHandler(ProductAccountingException.class)
-    public ResponseEntity<String> handleNotFoundUserException(ProductAccountingException error){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.getMessage());
-    }
+  @ExceptionHandler(ProductAccountingException.class)
+  public ResponseEntity<String> handleNotFoundUserException(ProductAccountingException error) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.getMessage());
+  }
 }

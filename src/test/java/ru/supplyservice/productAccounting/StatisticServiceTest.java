@@ -1,5 +1,13 @@
 package ru.supplyservice.productAccounting;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,64 +23,56 @@ import ru.supplyservice.productAccounting.usecase.dto.SupplierDTO;
 import ru.supplyservice.productAccounting.usecase.service.DeliveryItemService;
 import ru.supplyservice.productAccounting.usecase.service.StatisticService;
 
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 class StatisticServiceTest {
 
-    @Mock
-    private DeliveryItemService deliveryItemService;
+  @Mock private DeliveryItemService deliveryItemService;
 
-    @InjectMocks
-    private StatisticService service;
+  @InjectMocks private StatisticService service;
 
-    @Test
-    @DisplayName("Расчёт статистики")
-    void getReportOfPeriod_CalculationCheck() {
-        Instant start = Instant.now().minusSeconds(1000);
-        Instant end = Instant.now();
-        
-        SupplierDTO supplier = new SupplierDTO(UUID.randomUUID(), "Sup1", "Addr");
-        DeliveryRecordDTO record = new DeliveryRecordDTO(supplier, start, "info");
-        ProductDTO product = new ProductDTO(1L, "Prod1", "i", "kg");
+  @Test
+  @DisplayName("Расчёт статистики")
+  void getReportOfPeriod_CalculationCheck() {
+    Instant start = Instant.now().minusSeconds(1000);
+    Instant end = Instant.now();
 
-        DeliveryItemDTO item1 = new DeliveryItemDTO(record, product, BigDecimal.TEN, true, BigDecimal.valueOf(100));
-        DeliveryItemDTO item2 = new DeliveryItemDTO(record, product, BigDecimal.valueOf(5), true, BigDecimal.valueOf(50));
+    SupplierDTO supplier = new SupplierDTO(UUID.randomUUID(), "Sup1", "Addr");
+    DeliveryRecordDTO record = new DeliveryRecordDTO(supplier, start, "info");
+    ProductDTO product = new ProductDTO(1L, "Prod1", "i", "kg");
 
-        when(deliveryItemService.getAcceptedDeliveryItemsOfPeriod(start, end))
-                .thenReturn(List.of(item1, item2));
+    DeliveryItemDTO item1 =
+        new DeliveryItemDTO(record, product, BigDecimal.TEN, true, BigDecimal.valueOf(100));
+    DeliveryItemDTO item2 =
+        new DeliveryItemDTO(record, product, BigDecimal.valueOf(5), true, BigDecimal.valueOf(50));
 
-        ReportResponse response = service.getReportOfPeriod(start, end);
+    when(deliveryItemService.getAcceptedDeliveryItemsOfPeriod(start, end))
+        .thenReturn(List.of(item1, item2));
 
-        BigDecimal expectedTotalQty = BigDecimal.valueOf(15);
-        assertEquals(response.quantityOfPeriod(), expectedTotalQty);
-        BigDecimal expectedTotalPrice = BigDecimal.valueOf(150);
-        assertEquals(response.priceOfPeriod(), expectedTotalPrice);
+    ReportResponse response = service.getReportOfPeriod(start, end);
 
-        assertEquals(1, response.statistics().size());
-        StatInfo statInfo = response.statistics().getFirst();
-        assertEquals("Sup1", statInfo.supplierName());
+    BigDecimal expectedTotalQty = BigDecimal.valueOf(15);
+    assertEquals(response.quantityOfPeriod(), expectedTotalQty);
+    BigDecimal expectedTotalPrice = BigDecimal.valueOf(150);
+    assertEquals(response.priceOfPeriod(), expectedTotalPrice);
 
-        assertEquals(BigDecimal.valueOf(15), statInfo.totalItemsQuantity());
-    }
+    assertEquals(1, response.statistics().size());
+    StatInfo statInfo = response.statistics().getFirst();
+    assertEquals("Sup1", statInfo.supplierName());
 
-    @Test
-    @DisplayName("Расчёт статистики по пустой записи")
-    void getReportOfPeriod_Empty() {
-        Instant now = Instant.now();
-        when(deliveryItemService.getAcceptedDeliveryItemsOfPeriod(now, now)).thenReturn(Collections.emptyList());
+    assertEquals(BigDecimal.valueOf(15), statInfo.totalItemsQuantity());
+  }
 
-        ReportResponse response = service.getReportOfPeriod(now, now);
+  @Test
+  @DisplayName("Расчёт статистики по пустой записи")
+  void getReportOfPeriod_Empty() {
+    Instant now = Instant.now();
+    when(deliveryItemService.getAcceptedDeliveryItemsOfPeriod(now, now))
+        .thenReturn(Collections.emptyList());
 
-        assertEquals(BigDecimal.ZERO, response.quantityOfPeriod());
-        assertEquals(BigDecimal.ZERO, response.priceOfPeriod());
-        assertTrue(response.statistics().isEmpty());
-    }
+    ReportResponse response = service.getReportOfPeriod(now, now);
+
+    assertEquals(BigDecimal.ZERO, response.quantityOfPeriod());
+    assertEquals(BigDecimal.ZERO, response.priceOfPeriod());
+    assertTrue(response.statistics().isEmpty());
+  }
 }

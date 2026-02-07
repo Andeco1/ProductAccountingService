@@ -1,7 +1,16 @@
 services:
-  postgres:
+  server:
+    container_name: product-accounting-server
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - database
+  database:
     image: postgres:15-alpine
-    container_name: fruit-accounting-db
+    container_name: product-accounting-db
     ports:
       - "5432:5432"
     environment:

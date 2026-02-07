@@ -10,20 +10,21 @@ import ru.supplyservice.productAccounting.usecase.service.SupplierService;
 @RequestMapping("/api-v1.0/supplier")
 public class SupplierController {
 
-    SupplierService supplierService;
-    @Autowired
-    public SupplierController(SupplierService supplierService) {
-        this.supplierService = supplierService;
-    }
+  SupplierService supplierService;
 
-    @GetMapping()
-    public ResponseEntity<SupplierDTO> getSupplierByName(@RequestParam String name){
-        return ResponseEntity.ok(supplierService.getSupplierByName(name));
-    }
+  @Autowired
+  public SupplierController(SupplierService supplierService) {
+    this.supplierService = supplierService;
+  }
 
-    @PostMapping()
-    public ResponseEntity<SupplierDTO> uploadSupplier(@RequestBody SupplierDTO supplierDTO){
-        supplierDTO = supplierService.saveSupplier(supplierDTO);
-        return ResponseEntity.ok(supplierDTO);
-    }
+  @GetMapping()
+  public ResponseEntity<SupplierDTO> getSupplierByName(@RequestParam String name) {
+    return ResponseEntity.ok(supplierService.getSupplierByName(name));
+  }
+
+  @PostMapping()
+  public ResponseEntity<SupplierDTO> uploadSupplier(@RequestBody SupplierDTO supplierDTO) {
+    supplierDTO = supplierService.saveSupplier(supplierDTO);
+    return ResponseEntity.ok(supplierDTO);
+  }
 }

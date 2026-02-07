@@ -4,9 +4,4 @@ import java.time.Instant;
 import java.util.List;
 
 public record DeliveryRecordInfo(
-        String supplierName,
-        Instant date,
-        String info,
-        List<ItemInfo> items
-) {
-}
+    String supplierName, Instant date, String info, List<ItemInfo> items) {}

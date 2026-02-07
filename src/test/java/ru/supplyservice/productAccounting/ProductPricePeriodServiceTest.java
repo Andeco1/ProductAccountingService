@@ -1,5 +1,11 @@
 package ru.supplyservice.productAccounting;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
+import java.time.Instant;
+import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,68 +23,61 @@ import ru.supplyservice.productAccounting.usecase.service.ProductPricePeriodServ
 import ru.supplyservice.productAccounting.usecase.service.ProductService;
 import ru.supplyservice.productAccounting.usecase.service.SupplierService;
 
-import java.time.Instant;
-import java.util.Collections;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 class ProductPricePeriodServiceTest {
 
-    @Mock private ProductPricePeriodRepository repository;
-    @Mock private DTOMapper mapper;
-    @Mock private SupplierService supplierService;
-    @Mock private ProductService productService;
+  @Mock private ProductPricePeriodRepository repository;
+  @Mock private DTOMapper mapper;
+  @Mock private SupplierService supplierService;
+  @Mock private ProductService productService;
 
-    @InjectMocks
-    private ProductPricePeriodService service;
+  @InjectMocks private ProductPricePeriodService service;
 
-    @Test
-    @DisplayName("Найти запись с ценой в диапазоне")
-    void getActivePricePeriod_Success() {
-        Product p = new Product();
-        p.setName("P");
-        Supplier s = new Supplier();
-        s.setName("S");
-        Instant now = Instant.now();
-        ProductPricePeriod ppp = new ProductPricePeriod();
-        
-        when(repository.findActivePricePeriod(p, s, now)).thenReturn(List.of(ppp));
-        when(mapper.productPricePeriodToProductPricePeriodDTO(ppp)).thenReturn(
-                new ProductPricePeriodDTO("S", "P", now, now, null));
+  @Test
+  @DisplayName("Найти запись с ценой в диапазоне")
+  void getActivePricePeriod_Success() {
+    Product p = new Product();
+    p.setName("P");
+    Supplier s = new Supplier();
+    s.setName("S");
+    Instant now = Instant.now();
+    ProductPricePeriod ppp = new ProductPricePeriod();
 
-        ProductPricePeriodDTO result = service.getActivePricePeriod(p, s, now);
-        
-        assertNotNull(result);
-    }
+    when(repository.findActivePricePeriod(p, s, now)).thenReturn(List.of(ppp));
+    when(mapper.productPricePeriodToProductPricePeriodDTO(ppp))
+        .thenReturn(new ProductPricePeriodDTO("S", "P", now, now, null));
 
-    @Test
-    @DisplayName("Цена по продукту не найдена")
-    void getActivePricePeriod_NotFound() {
-        Product p = new Product();
-        p.setName("P");
-        Supplier s = new Supplier();
-        s.setName("S");
-        Instant now = Instant.now();
+    ProductPricePeriodDTO result = service.getActivePricePeriod(p, s, now);
 
-        when(repository.findActivePricePeriod(p, s, now)).thenReturn(Collections.emptyList());
+    assertNotNull(result);
+  }
 
-        assertThrows(NoActivePriceFoundException.class, 
-                () -> service.getActivePricePeriod(p, s, now));
-    }
+  @Test
+  @DisplayName("Цена по продукту не найдена")
+  void getActivePricePeriod_NotFound() {
+    Product p = new Product();
+    p.setName("P");
+    Supplier s = new Supplier();
+    s.setName("S");
+    Instant now = Instant.now();
 
-    @Test
-    @DisplayName("Найдено две цены на один продукт и одного поставщика")
-    void getActivePricePeriod_MultipleFound() {
-        Product p = new Product(); p.setName("P");
-        Supplier s = new Supplier(); s.setName("S");
-        Instant now = Instant.now();
+    when(repository.findActivePricePeriod(p, s, now)).thenReturn(Collections.emptyList());
 
-        when(repository.findActivePricePeriod(p, s, now)).thenReturn(List.of(new ProductPricePeriod(), new ProductPricePeriod()));
+    assertThrows(NoActivePriceFoundException.class, () -> service.getActivePricePeriod(p, s, now));
+  }
 
-        assertThrows(NoActivePriceFoundException.class, 
-                () -> service.getActivePricePeriod(p, s, now));
-    }
+  @Test
+  @DisplayName("Найдено две цены на один продукт и одного поставщика")
+  void getActivePricePeriod_MultipleFound() {
+    Product p = new Product();
+    p.setName("P");
+    Supplier s = new Supplier();
+    s.setName("S");
+    Instant now = Instant.now();
+
+    when(repository.findActivePricePeriod(p, s, now))
+        .thenReturn(List.of(new ProductPricePeriod(), new ProductPricePeriod()));
+
+    assertThrows(NoActivePriceFoundException.class, () -> service.getActivePricePeriod(p, s, now));
+  }
 }

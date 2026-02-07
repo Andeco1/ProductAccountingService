@@ -7,6 +7,4 @@ public record StatInfo(
     String supplierName,
     List<AcceptedItemInfo> items,
     BigDecimal totalItemsQuantity,
-    BigDecimal totalItemsPrice
-) {
-}
+    BigDecimal totalItemsPrice) {}
