@@ -8,11 +8,13 @@ import ru.supplyservice.productAccounting.core.entity.DeliveryItem;
 import ru.supplyservice.productAccounting.core.entity.DeliveryRecord;
 import ru.supplyservice.productAccounting.core.entity.Product;
 import ru.supplyservice.productAccounting.core.entity.Supplier;
+import ru.supplyservice.productAccounting.usecase.dto.DeliveryItemDTO;
 import ru.supplyservice.productAccounting.usecase.dto.ProductPricePeriodDTO;
 import ru.supplyservice.productAccounting.usecase.mapper.DTOMapper;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class DeliveryItemService {
@@ -29,8 +31,14 @@ public class DeliveryItemService {
         this.deliveryItemRepository = deliveryItemRepository;
     }
 
+    @Transactional(readOnly = true)
+    public List<DeliveryItemDTO> getAcceptedDeliveryItemsOfPeriod(Instant dateFrom, Instant dateTo){
+        return deliveryItemRepository.findAllByDeliveryRecordDateBetweenAndAcceptanceTrue(dateFrom, dateTo)
+                        .stream().map(mapper::deliveryItemToDeliveryItemDTO).toList();
+    }
+
     @Transactional
-    public DeliveryItem saveDeliveryItem(DeliveryRecord deliveryRecord, String productName, BigDecimal quantity, Boolean acceptance){
+    public DeliveryItem saveDeliveryItem(DeliveryRecord deliveryRecord, String productName, BigDecimal quantity, boolean acceptance){
         Supplier supplier = deliveryRecord.getSupplier();
         Instant date = deliveryRecord.getDate();
         Product product = mapper.productDTOToProduct(productService.getProductByName(productName));

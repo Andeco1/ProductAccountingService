@@ -32,7 +32,7 @@ public class DeliveryRecordService {
     public boolean saveDeliveryRecord(DeliveryRecordInfo deliveryRecordInfo){
         SupplierDTO supplierDTO = supplierService.getSupplierByName(deliveryRecordInfo.supplierName());
         DeliveryRecordDTO deliveryRecordDTO = new DeliveryRecordDTO(supplierDTO, deliveryRecordInfo.date(), deliveryRecordInfo.info());
-        DeliveryRecord deliveryRecord = deliveryRecordRepository.save(mapper.deliveryRecordDTOtoDeliveryREcord(deliveryRecordDTO));
+        DeliveryRecord deliveryRecord = deliveryRecordRepository.save(mapper.deliveryRecordDTOtoDeliveryRecord(deliveryRecordDTO));
         deliveryRecordInfo.items().forEach(item -> deliveryItemService.saveDeliveryItem(deliveryRecord, item.productName(), item.quantity(), item.acceptance()));
         return true;
     }

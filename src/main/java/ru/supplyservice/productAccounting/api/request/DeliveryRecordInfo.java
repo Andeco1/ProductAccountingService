@@ -7,6 +7,6 @@ public record DeliveryRecordInfo(
         String supplierName,
         Instant date,
         String info,
-        List<ItemsInfo> items
+        List<ItemInfo> items
 ) {
 }
