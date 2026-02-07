@@ -2,4 +2,4 @@ databaseChangeLog:
   - include:
       file: db/changelog/changeset/001-initial-schema.sql
   - include:
-      file: db/changelog/changeset/002-case-data-seeding.sql
+      file: db/changelog/changeset/002-test-data-init.sql

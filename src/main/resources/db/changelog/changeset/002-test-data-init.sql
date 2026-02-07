@@ -1,6 +1,6 @@
 INSERT INTO supplier (uuid, name, address) VALUES
-('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'ООО Сады Придонья', 'г. Волгоград, ул. Садовая 1'),
-('b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12', 'ЗАО АгроЮг', 'г. Краснодар, ул. Полевая 5'),
+('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'ООО Большой Сад', 'г. Волгоград, ул. Садовая 1'),
+('b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12', 'ЗАО Много фруктов', 'г. Краснодар, ул. Полевая 5'),
 ('c0eebc99-9c0b-4ef8-bb6d-6bb9bd380a13', 'Фермер Иван', 'г. Ростов, д. Петровка');
 
 INSERT INTO product (id, name, info, measurement_unit) VALUES
