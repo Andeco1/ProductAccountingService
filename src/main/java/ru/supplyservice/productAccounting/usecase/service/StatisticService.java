@@ -25,8 +25,8 @@ public class StatisticService {
 
     public ReportResponse getReportOfPeriod(Instant dateFrom, Instant dateTo){
         List<DeliveryItemDTO> deliveryItemDTOList = deliveryItemService.getAcceptedDeliveryItemsOfPeriod(dateFrom, dateTo);
-        BigDecimal quantityOfPeriod = BigDecimal.ONE;
-        BigDecimal priceOfPeriod = BigDecimal.ONE;
+        BigDecimal quantityOfPeriod = BigDecimal.ZERO;
+        BigDecimal priceOfPeriod = BigDecimal.ZERO;
         Map<String, SupplierInfo> acceptedItemInfoMap = new HashMap<>();
         for (DeliveryItemDTO e : deliveryItemDTOList){
             String supplierName = e.deliveryRecordDTO().supplierDTO().name();
@@ -55,7 +55,7 @@ public class StatisticService {
         }
 
         public static SupplierInfo getDefault(){
-            return new SupplierInfo(new ArrayList<>(), BigDecimal.ONE, BigDecimal.ONE);
+            return new SupplierInfo(new ArrayList<>(), BigDecimal.ZERO, BigDecimal.ZERO);
         }
     }
     private AcceptedItemInfo deliveryItemToAcceptedItemInfo(DeliveryItemDTO deliveryItemDTO){
