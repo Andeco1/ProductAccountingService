@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.supplyservice.productAccounting.usecase.dto.SupplierDTO;
 import ru.supplyservice.productAccounting.usecase.service.SupplierService;
 
-import java.net.URI;
-
 @RestController
 @RequestMapping("/api-v1.0/supplier")
 public class SupplierController {

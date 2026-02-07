@@ -8,6 +8,7 @@ import ru.supplyservice.productAccounting.core.entity.ProductPricePeriod;
 import ru.supplyservice.productAccounting.core.entity.Supplier;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,9 +20,14 @@ public interface ProductPricePeriodRepository extends JpaRepository<ProductPrice
           and ppp.supplier = :supplier
           and :date between ppp.startDate and ppp.endDate
     """)
-    Optional<ProductPricePeriod> findActivePricePeriod(
-            Product product,
-            Supplier supplier,
-            Instant date
+    List<ProductPricePeriod> findActivePricePeriod(Product product, Supplier supplier, Instant date
     );
+
+    @Query("""
+        select ppp
+        from ProductPricePeriod ppp
+        where ppp.supplier = :supplier
+          and :date between ppp.startDate and ppp.endDate
+    """)
+    List<ProductPricePeriod> findAllActivePrices(Supplier supplier, Instant date);
 }

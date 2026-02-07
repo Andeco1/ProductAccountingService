@@ -17,10 +17,4 @@ public interface DeliveryItemRepository extends JpaRepository<DeliveryItem, Long
             Instant start,
             Instant end
     );
-
-//    "select * from DeliveryItem DI " +
-//            "join DeliveryRecord DR " +
-//            "on DR.id = DI.record_id " +
-//            "where DR.date between :start and :end and AcceptanceIsTrue"
-
 }

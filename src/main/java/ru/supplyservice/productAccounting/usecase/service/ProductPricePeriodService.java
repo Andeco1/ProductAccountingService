@@ -32,8 +32,13 @@ public class ProductPricePeriodService {
 
     @Transactional(readOnly = true)
     public ProductPricePeriodDTO getActivePricePeriod(Product product, Supplier supplier, Instant date){
-        Optional<ProductPricePeriod> productPricePeriod = productPricePeriodRepository.findActivePricePeriod(product,supplier,date);
-        return mapper.productPricePeriodToProductPricePeriodDTO(productPricePeriod.orElseThrow(() -> new NoActivePriceFoundException("Не найдена цена для " + product.getName() + " поставщика " + supplier.getName() + " для даты " + date)));
+        List<ProductPricePeriod> productPricePeriod = productPricePeriodRepository.findActivePricePeriod(product, supplier,date);
+        if(productPricePeriod.isEmpty()){
+            throw new NoActivePriceFoundException("Не найдена цена для " + product.getName() + " поставщика " + supplier.getName() + " для даты " + date);
+        } else if (productPricePeriod.size() > 1){
+            throw new NoActivePriceFoundException("Найдено несколько цен для " + product.getName() + " поставщика " + supplier.getName() + " для даты " + date);
+        }
+        return mapper.productPricePeriodToProductPricePeriodDTO(productPricePeriod.getFirst());
     }
 
     @Transactional

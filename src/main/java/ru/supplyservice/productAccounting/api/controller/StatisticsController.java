@@ -10,15 +10,23 @@ import ru.supplyservice.productAccounting.api.response.ReportResponse;
 import ru.supplyservice.productAccounting.usecase.service.StatisticService;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 
 @RestController
 @RequestMapping("/api-v1.0/statistics")
 public class StatisticsController {
-    @Autowired
     StatisticService statisticService;
+    @Autowired
+    public StatisticsController(StatisticService statisticService) {
+        this.statisticService = statisticService;
+    }
 
     @GetMapping("/report")
-    public ResponseEntity<ReportResponse> getReport(@RequestParam Instant dateFrom, @RequestParam Instant dateTo){
-        return ResponseEntity.ok(statisticService.getReportOfPeriod(dateFrom, dateTo));
+    public ResponseEntity<ReportResponse> getReport(@RequestParam LocalDate dateFrom, @RequestParam LocalDate dateTo){
+        Instant start = dateFrom.atStartOfDay(ZoneId.systemDefault()).toInstant();
+        Instant end = dateTo.atTime(LocalTime.MAX).atZone(ZoneId.systemDefault()).toInstant();
+        return ResponseEntity.ok(statisticService.getReportOfPeriod(start, end));
     }
 }
