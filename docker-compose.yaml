@@ -1,0 +1,29 @@
+services:
+  server:
+    container_name: product-accounting-server
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/product_accounting
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_LIQUIBASE_ENABLED: "true"
+    depends_on:
+      - database
+  database:
+    image: postgres:15-alpine
+    container_name: product-accounting-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: product_accounting
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

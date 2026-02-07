@@ -5,5 +5,4 @@ import org.springframework.stereotype.Repository;
 import ru.supplyservice.productAccounting.core.entity.DeliveryRecord;
 
 @Repository
-public interface DeliveryRecordRepository extends JpaRepository<DeliveryRecord, Long> {
-}
+public interface DeliveryRecordRepository extends JpaRepository<DeliveryRecord, Long> {}
